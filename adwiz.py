@@ -59,8 +59,12 @@ fp2.close()
 fp3.close()
 
 #count words
-sc=SparkContext()
 input_file=sc.textFile("./Final_data.txt")
 words=input_file.flatMap(lambda line : line.split(" "))
 count=words.map(lambda word :(word,1)).reduceByKey(lambda a,b:a+b)
-count.saveAsTextFile("./result")
+all_words=[]
+values=[]
+for i in count.collect():
+	all_words.append(i[0])
+	values.append(i[1])
+	
